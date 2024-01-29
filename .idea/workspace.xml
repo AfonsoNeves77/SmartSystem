@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RunManager">
+    <configuration name="pt.ipp.isep.dei.project in java-maven-initial-project" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-maven-initial-project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pt.ipp.isep.dei.project.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pt.ipp.isep.dei.project" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.pt.ipp.isep.dei.project in java-maven-initial-project" />
+      </list>
+    </recent_temporary>
+  </component>
+</project>
