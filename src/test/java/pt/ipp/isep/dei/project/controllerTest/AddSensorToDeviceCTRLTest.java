@@ -21,6 +21,7 @@ public class AddSensorToDeviceCTRLTest {
      * 2 - Add a room to list with previously defined variables;
      * 3 - Instantiate controller responsible for adding a sensor to a device functionality;
      * 4 - Access room name of the room (previously added) by retrieving the house´s list of rooms;
+     *
      * @throws InstantiationException If an error occurs during object instantiation.
      */
 
@@ -35,17 +36,19 @@ public class AddSensorToDeviceCTRLTest {
         double length = 9;
         double height = 2;
         //2.
-        myHouse.getListOfRooms().addRoomToList(name,floor,width,length,height);
+        myHouse.addRoom(name, floor, width, length, height);
 
         //Act
 
         //3.
         AddSensorToDeviceCTRL addSensorCtrl = new AddSensorToDeviceCTRL(myHouse);
         //4.
-        String resultName = addSensorCtrl.getListOfRooms().get(0).getRoomName();
+        String resultName = addSensorCtrl.getRooms().get(0).getRoomName();
         //Assert
-        assertEquals(name,resultName);
+        assertEquals(name, resultName);
     }
+
+
 
     /**
      * Test case for verifying the retrieval of DevicesDTO instances.
