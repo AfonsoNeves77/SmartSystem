@@ -15,10 +15,7 @@ public class TemperatureSensor implements Sensor{
      * @param sensorName The name of the sensor.
      * @throws InstantiationException If the sensor name is invalid.
      */
-    public TemperatureSensor(String sensorName) throws InstantiationException {
-        if(sensorName == null || sensorName.trim().isEmpty()){
-            throw new InstantiationException("Please insert valid sensor data.");
-        }
+    public TemperatureSensor(String sensorName)  {
 
         this.sensorName = sensorName;
     }

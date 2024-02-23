@@ -2,14 +2,19 @@ package pt.ipp.isep.dei.project.controller;
 
 import pt.ipp.isep.dei.project.DTO.RoomDTO;
 import pt.ipp.isep.dei.project.DTO.RoomDTOMapper;
+import pt.ipp.isep.dei.project.domain.FactoryListOfSensors;
 import pt.ipp.isep.dei.project.domain.House;
 import pt.ipp.isep.dei.project.domain.Room;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AddDeviceToRoomCTRL {
 
     House myHouse;
+    CommonListOfRooms common;
 
     /**
      * Controller Constructor for Use Case: Add a new device to a room
@@ -17,6 +22,7 @@ public class AddDeviceToRoomCTRL {
      */
     public AddDeviceToRoomCTRL (House myHouse){
         this.myHouse = myHouse;
+        common = new CommonListOfRooms(myHouse);
     }
 
 
@@ -24,11 +30,9 @@ public class AddDeviceToRoomCTRL {
      * Retrieves a list of all rooms in the house.
      * @return an ArrayList of RoomDTO objects representing all rooms in the house
      */
-    public ArrayList<RoomDTO> getListOfRooms(){
-        CommonListOfRooms common = new CommonListOfRooms(myHouse);
-        ArrayList<Room> listOfRooms = common.getListOfRooms();
-        RoomDTOMapper mapper = new RoomDTOMapper();
-        return mapper.getRoomDTOList(listOfRooms);
+    public List<RoomDTO> getRooms( )
+    {
+        return common.getRooms();
     }
 
     /**
@@ -38,13 +42,10 @@ public class AddDeviceToRoomCTRL {
      * @param deviceModel the model of the device to add
      * @return an integer indicating the success or failure of the operation.
      */
-    public int addDeviceToRoom (RoomDTO roomDTO, String deviceName, String deviceModel){
-        RoomDTOMapper mapper = new RoomDTOMapper();
-        Room selectedRoom = mapper.dtoToDomain(roomDTO, myHouse);
-        if(selectedRoom == null){
-            return 3;
-        }
-        String roomName = selectedRoom.getRoomName();
-        return selectedRoom.getListOfDevices().addDeviceToList(deviceName, deviceModel, roomName);
+    public int addDeviceToRoom (RoomDTO roomDTO, String deviceName, String deviceModel, FactoryListOfSensors factoryListOfSensors){
+
+        Room selectedRoom = common.getSelectedRoom(roomDTO);
+        String roomLocation = selectedRoom.getRoomName();
+        return selectedRoom.addDevice(deviceName,deviceModel,roomLocation,factoryListOfSensors);
     }
 }

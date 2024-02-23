@@ -1,5 +1,7 @@
 package pt.ipp.isep.dei.project.domain;
 
+import java.util.List;
+
 public class Room {
     private String roomName;
     private int houseFloor;
@@ -68,7 +70,11 @@ public class Room {
     /**
      * @return Object device list
      */
-    public ListOfDevices getListOfDevices() {
-        return deviceList;
+    public List<Device> getListOfDevices() {
+        return deviceList.getDeviceList();
+    }
+
+    public int addDevice(String deviceName, String deviceModel, String location,FactoryListOfSensors factoryListOfSensors){
+        return deviceList.addDeviceToList(deviceName,deviceModel,location,factoryListOfSensors);
     }
 }

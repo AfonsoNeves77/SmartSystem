@@ -9,35 +9,27 @@ import pt.ipp.isep.dei.project.domain.House;
 import pt.ipp.isep.dei.project.domain.Room;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GetListOfDevicesFromRoomCTRL {
     private House house;
 
+    private CommonListOfRooms commonRooms;
+    private CommonListOfDevices commonDevices;
     /**
      * Constructs a GetListOfDevicesFromRoomCTRL object with the provided House instance.
      *
      * @param house The House instance to be associated with the controller.
      */
     public GetListOfDevicesFromRoomCTRL(House house) {
+
         this.house = house;
+        commonRooms = new CommonListOfRooms(house);
+        commonDevices = new CommonListOfDevices(house);
     }
 
-    /**
-     * Retrieves a list of RoomDTO instances representing the rooms in the current house.
-     * This method utilizes a CommonListOfRoomsCTRL object to fetch the list of Room objects from the house.
-     * It then employs a RoomDTOMapper to convert the Room objects into corresponding RoomDTO instances.
-     *
-     * @return An ArrayList of RoomDTO instances representing the rooms in the house.
-     * @see CommonListOfRooms
-     * @see RoomDTOMapper
-     * @see Room
-     * @see RoomDTO
-     */
-    public ArrayList<RoomDTO> getListOfRooms(){
-        CommonListOfRooms common = new CommonListOfRooms(house);
-        ArrayList<Room> listOfRooms = common.getListOfRooms();
-        RoomDTOMapper mapper = new RoomDTOMapper();
-        return mapper.getRoomDTOList(listOfRooms);
+    public List<RoomDTO> getListOfRooms(){
+        return commonRooms.getRooms();
     }
 
     /**
@@ -57,15 +49,9 @@ public class GetListOfDevicesFromRoomCTRL {
      * @see Device
      */
 
-    public ArrayList<DeviceDTO> listOfDevicesInARoom(RoomDTO roomDTO){
-        RoomDTOMapper mapper = new RoomDTOMapper();
-        Room room = mapper.dtoToDomain(roomDTO, this.house);
-        if (room == null){
-            return null;
-        }
-        CommonListOfDevices common = new CommonListOfDevices(house);
-        ArrayList<Device> deviceList = common.getListOfDevices(room);
-        DeviceDTOMapper deviceMapper = new DeviceDTOMapper();
-        return deviceMapper.domainToDTO(deviceList);
+    public List<DeviceDTO> getDevicesFromRoom(RoomDTO roomDTO)
+    {
+        Room selectedRoom = commonRooms.getSelectedRoom(roomDTO);
+        return commonDevices.getDevicesFromRoom(selectedRoom);
     }
 }

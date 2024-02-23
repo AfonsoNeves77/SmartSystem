@@ -1,0 +1,48 @@
+@startuml
+
+skinparam ParticipantPadding 50
+autonumber
+
+participant ":GetListOfRoomsCTRL" as CTRL
+participant ":CommonListOfRooms" as CU
+participant ":House" as h
+participant ":ListOfRooms" as LR
+participant ":RoomDTOMapper" as RDTM
+
+
+[o-> CTRL : getRooms()
+activate CTRL
+CTRL -> CU : getRooms()
+activate CU
+CU -> h : getListOfRooms()
+activate h
+h -> LR : getListOfRooms()
+activate LR
+LR -> LR : listOfRooms = cloneList()
+activate LR
+deactivate LR
+LR --> h : listOfRooms
+deactivate LR
+h --> CU : listOfRooms
+
+deactivate h
+CU -> RDTM : domainToRoomDTOList(listOfRooms)
+activate RDTM
+loop for each room in room list
+RDTM -> RDTM : RoomDTO = domainToDTO(room)
+activate RDTM
+deactivate RDTM
+RDTM -> RDTM : put(RoomDTO)
+activate RDTM
+deactivate RDTM
+end loop
+RDTM --> CU : roomAndRoomDtoList
+deactivate RDTM
+CU -> CU : roomDtoList = truncateList(roomAndRoomDtoList)
+activate CU
+deactivate CU
+CU --> CTRL : roomDtoList
+deactivate CU
+[o<-- CTRL : roomDtoList
+deactivate CTRL
+@enduml

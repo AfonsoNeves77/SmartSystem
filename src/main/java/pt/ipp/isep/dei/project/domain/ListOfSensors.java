@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.project.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListOfSensors {
 
@@ -43,16 +44,16 @@ public class ListOfSensors {
      * @return 0 on successful addition, 1 if instantiation error, 2 if the sensor already exists.
      */
 
-    public int addSensor(String sensorName, SensorTypeOptions sensorType){
+    public boolean addSensor(String sensorName, SensorTypeOptions sensorType,FactorySensor factorySensor){
         if(isSensorInList(sensorName)) {
-            return 2;
+            return false;
         }
         try{
-            Sensor newSensor = createSensor(sensorName,sensorType);
+            Sensor newSensor = factorySensor.createSensor(sensorName,sensorType);
             listOfSensors.add(newSensor);
-            return 0;
-        } catch (InstantiationException e) {
-            return 1;
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
 
     }
@@ -79,7 +80,7 @@ public class ListOfSensors {
      * @return The list of sensors.
      */
 
-    public ArrayList<Sensor> getListOfSensors() {
-        return listOfSensors;
+    public List<Sensor> getListOfSensors() {
+        return new ArrayList<>(listOfSensors);
     }
 }

@@ -1,6 +1,7 @@
 package pt.ipp.isep.dei.project.domain;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public enum SensorTypeOptions {
@@ -15,6 +16,6 @@ public enum SensorTypeOptions {
      * @return The list of available SensorTypeOptions.
      */
     public static List<SensorTypeOptions> asList() {
-        return Arrays.asList(values());
+        return List.of(values());
     }
 }

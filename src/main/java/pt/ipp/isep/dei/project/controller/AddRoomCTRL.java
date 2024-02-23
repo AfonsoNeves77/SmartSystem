@@ -27,7 +27,7 @@ public class AddRoomCTRL {
         double width = roomDTO.getRoomWidth();
         double length = roomDTO.getRoomLength();
         double height = roomDTO.getRoomHeight();
-        return this.house.getListOfRooms().addRoomToList(roomName,houseFloor,width,length,height);
+        return this.house.addRoom(roomName,houseFloor,width,length,height);
     }
 
 }

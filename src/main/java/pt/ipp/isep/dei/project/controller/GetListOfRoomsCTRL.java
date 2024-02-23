@@ -6,9 +6,11 @@ import pt.ipp.isep.dei.project.domain.House;
 import pt.ipp.isep.dei.project.domain.Room;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GetListOfRoomsCTRL {
     private House house;
+    private CommonListOfRooms commonRooms;
 
     /**
      * Constructs a GetListOfRoomsCTRL object with the provided House instance.
@@ -16,7 +18,9 @@ public class GetListOfRoomsCTRL {
      * @param house The House instance to be associated with the controller.
      */
     public GetListOfRoomsCTRL(House house){
+
         this.house = house;
+        commonRooms = new CommonListOfRooms(house);
     }
 
     /**
@@ -31,10 +35,7 @@ public class GetListOfRoomsCTRL {
      * @see RoomDTO
      */
 
-    public ArrayList<RoomDTO> getListOfRooms(){
-        CommonListOfRooms common = new CommonListOfRooms(house);
-        ArrayList<Room> listOfRooms = common.getListOfRooms();
-        RoomDTOMapper mapper = new RoomDTOMapper();
-        return mapper.getRoomDTOList(listOfRooms);
+    public List<RoomDTO> getListOfRooms(){
+       return commonRooms.getRooms();
     }
 }

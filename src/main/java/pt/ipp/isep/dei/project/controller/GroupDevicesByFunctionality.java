@@ -5,6 +5,7 @@ import pt.ipp.isep.dei.project.domain.Room;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GroupDevicesByFunctionality {
 
@@ -14,11 +15,11 @@ public class GroupDevicesByFunctionality {
      * @param listRooms List of all Rooms of the house, passed by the controller
      * @return A HashMap with device functionalities as keys, and Device Objects as values
      */
-    public HashMap<String,ArrayList<Device>> getDevicesMap(ArrayList<Room> listRooms){
+    public HashMap<String,ArrayList<Device>> getDevicesMap(List<Room> listRooms){
         for (Room room : listRooms){
-            ArrayList<Device> deviceList = room.getListOfDevices().getDeviceList();
+            List<Device> deviceList = room.getListOfDevices();
             for (Device device : deviceList){
-                ArrayList<Sensor> sensorList = device.getListOfSensors().getListOfSensors();
+               List<Sensor> sensorList = device.getListOfSensors();
                 addDeviceToMap(sensorList,device);
                 }
             }
@@ -32,7 +33,7 @@ public class GroupDevicesByFunctionality {
      * @param sensorList Device sensor list to be analysed
      * @param device Device in analysis
      */
-    private void addDeviceToMap(ArrayList<Sensor> sensorList, Device device) {
+    private void addDeviceToMap(List<Sensor> sensorList, Device device) {
         for (Sensor sensor : sensorList) {
             String type = sensor.getType().toString();
             ArrayList<Device> deviceList = devicesMap.get(type);

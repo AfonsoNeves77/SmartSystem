@@ -1,0 +1,93 @@
+@startuml
+
+skinparam ParticipantPadding 50
+autonumber
+
+participant ":addSensorToDeviceController" as CTRL
+participant ":House" as h
+participant ":RoomDTOMapper" as RDTM
+participant ":Room" as r
+participant ":DeviceDTOMapper" as DDTM
+participant "dev : Device" as dev
+participant ":SensorTypeOptions" as STO
+participant "ListOfSensors" as LS
+participant "sensor : Sensor" as sen
+
+[o-> CTRL : getRooms()
+activate CTRL
+CTRL -> h : getListOfRooms()
+activate h
+h -> CTRL : listOfRooms
+deactivate h
+CTRL -> RDTM : domainToRoomDTOList(listOfRooms)
+activate RDTM
+loop for each room in room list
+RDTM -> RDTM : RoomDTO = domainToDTO(room)
+activate RDTM
+deactivate RDTM
+RDTM -> RDTM : add(RoomDTO)
+activate RDTM
+deactivate RDTM
+end loop
+RDTM -> CTRL : roomDtoList
+deactivate RDTM
+[o<-- CTRL : dtoRoomList
+deactivate CTRL
+
+
+[o-> CTRL : getDevicesFromRoom(roomDTO)
+activate CTRL
+CTRL -> CTRL : roomName = getName(roomDTO)
+activate CTRL
+deactivate CTRL
+CTRL -> h : room = getRoomByName(roomName)
+
+CTRL -> r : getDevices()
+activate r
+r -> CTRL : deviceList
+deactivate r
+CTRL -> DDTM : domainToDeviceDTOList(deviceList)
+activate DDTM
+loop for each device in device list
+DDTM -> DDTM : DeviceDTO = domainToDTO(device)
+activate DDTM
+deactivate DDTM
+DDTM -> DDTM : add(DeviceDTO)
+activate DDTM
+deactivate DDTM
+end loop
+DDTM -> CTRL : deviceDtoList
+deactivate DDTM
+[o<-- CTRL : dtoDeviceList
+deactivate CTRL
+
+[o--> CTRL: getAvailableSensorTypes()
+activate CTRL
+CTRL -> STO :  sensorTypeList = getSensorTypeList()
+[o<--CTRL : sensorTypeList
+
+deactivate CTRL
+
+
+[o-> CTRL : addSensor(deviceDto, sensorName,sensorType)
+activate CTRL
+CTRL -> CTRL : deviceName = getName(deviceDTO)
+activate CTRL
+deactivate CTRL
+CTRL -> r : device = getDeviceByName(deviceName)
+CTRL -> dev : addSensor(sensorName,sensorType)
+activate dev
+dev -> LS : addSensor(sensorName,sensorType)
+activate LS
+LS -> sen ** : createSensor(sensorName,sensorType)
+LS -> LS : add(sensor)
+activate LS
+deactivate LS
+LS --> dev : operationResult
+deactivate LS
+dev --> CTRL : operationResult
+deactivate dev
+[o<-- CTRL : operationResult
+deactivate CTRL
+
+@enduml

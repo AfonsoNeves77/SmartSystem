@@ -2,16 +2,21 @@ package pt.ipp.isep.dei.project.domain;
 
 import pt.ipp.isep.dei.project.archive.SensorTypeList;
 
+import java.util.List;
+
 public class House {
 
     /**
      * The Class House manages its name, location, the list of rooms and the list of sensor types;
      */
+
+
     private String houseName;
     private GPS gps;
     private Address address;
     private ListOfRooms listOfRooms = new ListOfRooms();
     private SensorTypeList sensorTypeList = new SensorTypeList();
+    private FactoryLocation factoryLocation;
 
     /**
      * Constructor for House with minimum parameters inserted. We deemed a "name" was the only obligatory parameter;
@@ -20,9 +25,10 @@ public class House {
      * @throws InstantiationException Invalid house name
      */
 
-    public House(String houseName) throws InstantiationException {
+    public House(String houseName,FactoryLocation factoryLocation) throws InstantiationException {
         if (houseName == null || houseName.trim().isEmpty())
             throw new InstantiationException ("Please insert a valid house name.");
+        this.factoryLocation = factoryLocation;
     }
 
     /**
@@ -39,8 +45,8 @@ public class House {
      */
     public int configureLocation(String doorReference, String buildingNumber, String streetName, String city, String country, String zipCode, double latitude, double longitude) {
         try{
-            this.address = createAddress(doorReference,buildingNumber,streetName,city,country,zipCode);
-            this.gps = createGPS(latitude, longitude);
+            this.address = factoryLocation.createAddress(doorReference,buildingNumber,streetName,city,country,zipCode);
+            this.gps = factoryLocation.createGPS(latitude, longitude);
         } catch (InstantiationException e) {
             return 1;
         }
@@ -73,27 +79,16 @@ public class House {
         return new GPS(latitude, longitude);
     }
 
-    public ListOfRooms getListOfRooms() {
-        return listOfRooms;
+    public List<Room> getListOfRooms() {
+        return listOfRooms.getRoomList();
+    }
+
+    public int addRoom(String roomName,int houseFloor, double width, double length, double height){
+        return listOfRooms.addRoomToList(roomName,houseFloor,width,length,height);
     }
 
     public SensorTypeList getSensorTypeList() {
         return sensorTypeList;
     }
 
-    public Address getClonedAddress() throws InstantiationException {
-        String doorReference = address.getDoorReference();
-        String buildingNumber = address.getBuildingNumber();
-        String streetName = address.getStreetName();
-        String city = address.getCity();
-        String country = address.getCountry();
-        String zipCode = address.getZipCode();
-        return new Address(doorReference,buildingNumber,streetName,city,country,zipCode);
-    }
-
-    public GPS getClonedGPS() throws InstantiationException {
-        double latitude = gps.getLatitude();
-        double longitude = gps.getLongitude();
-        return new GPS(latitude,longitude);
-    }
 }

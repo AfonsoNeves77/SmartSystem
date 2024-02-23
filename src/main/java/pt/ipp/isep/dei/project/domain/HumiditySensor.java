@@ -13,11 +13,7 @@ public class HumiditySensor implements Sensor {
      * Constructor for Sensor with all parameters.
      * @param sensorName Sensor name
      */
-    public HumiditySensor(String sensorName) throws InstantiationException {
-        if(sensorName == null || sensorName.trim().isEmpty()){
-            throw new InstantiationException("Please insert valid sensor data.");
-        }
-
+    public HumiditySensor(String sensorName) {
         this.sensorName = sensorName;
     }
 

@@ -22,8 +22,8 @@ public class ListOfDevices {
      * @return The newly created Device instance.
      * @throws InstantiationException If the device cannot be instantiated.
      */
-    private Device createDevice(String deviceName, String deviceModel, String location) throws InstantiationException {
-        return new Device(deviceName, deviceModel, location);
+    private Device createDevice(String deviceName, String deviceModel, String location,FactoryListOfSensors factoryListOfSensors) throws InstantiationException {
+        return new Device(deviceName, deviceModel, location,factoryListOfSensors);
     }
 
     /**
@@ -37,11 +37,11 @@ public class ListOfDevices {
      * @return A zero if the device was added successfully; a 1 if the device name is duplicated; a 2 if there is an error creating the device.
      */
     //For now this method can´t validate the device model.
-    public int addDeviceToList (String deviceName, String deviceModel, String location){
+    public int addDeviceToList (String deviceName, String deviceModel, String location,FactoryListOfSensors factoryListOfSensors){
         //device com o mm nome
         if (!isDeviceDuplicated(deviceName)){
             try{
-                Device newDevice = createDevice(deviceName, deviceModel, location);
+                Device newDevice = createDevice(deviceName, deviceModel, location,factoryListOfSensors);
                 this.deviceList.add(newDevice);
                 return 0;
             } catch (InstantiationException e) {
@@ -73,6 +73,6 @@ public class ListOfDevices {
      * @return The ArrayList containing the list of devices.
      */
     public ArrayList<Device> getDeviceList() {
-        return deviceList;
+        return new ArrayList<>(deviceList);
     }
 }

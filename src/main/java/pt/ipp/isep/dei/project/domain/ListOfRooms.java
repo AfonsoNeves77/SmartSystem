@@ -66,6 +66,6 @@ public class ListOfRooms {
      * @return Room list with Room objects
      */
     public ArrayList<Room> getRoomList() {
-        return roomList;
+        return new ArrayList<>(roomList);
     }
 }

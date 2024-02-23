@@ -5,6 +5,9 @@ import pt.ipp.isep.dei.project.domain.Room;
 import pt.ipp.isep.dei.project.domain.RoomDimensions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RoomDTOMapper {
 
@@ -13,41 +16,25 @@ public class RoomDTOMapper {
      * @param room Room object
      * @return Room DTO object
      */
-    public RoomDTO domainToDTO(Room room){
+    public static RoomDTO Domain2DTO(Room room){
         RoomDimensions dimensions = room.getDimensions();
         double[] roomDimensions = room.extractEachDimension(dimensions);
         return new RoomDTO(room.getRoomName(), room.getHouseFloor(),
                 roomDimensions[0], roomDimensions[1], roomDimensions[2]);
     }
 
-    /**
-     * Converts list of rooms into a list of room dtos.
-     * @param list List of rooms
-     * @return List of Room DTOS
-     */
-    public ArrayList<RoomDTO> getRoomDTOList(ArrayList<Room> list){
-        ArrayList<RoomDTO> roomDTOList = new ArrayList<>();
-        for (Room singleRoom : list){
-            RoomDTO singleDTO = domainToDTO(singleRoom);
-            roomDTOList.add(singleDTO);
-        }
-        return roomDTOList;
+
+    static public Map<RoomDTO, Room> Domain2DTO(List<Room> rooms)
+    {
+        Map<RoomDTO, Room> roomsDTOAndRooms = new HashMap<>();
+
+        rooms.forEach( room -> {
+            RoomDTO roomDTO = RoomDTOMapper.Domain2DTO(room);
+            roomsDTOAndRooms.put( roomDTO, room );
+        });
+
+        return roomsDTOAndRooms;
     }
 
-    /**
-     * Converts a RoomDTO object to its corresponding domain representation.
-     * @param roomDTO The RoomDTO object to convert.
-     * @param myhouse The house object to which the converted room belongs.
-     * @return The corresponding domain representation of the room. Returns null if
-     * room does not exist in the House.
-     */
-    public Room dtoToDomain (RoomDTO roomDTO, House myhouse){
-        ArrayList<Room> list = myhouse.getListOfRooms().getRoomList();
-        for(Room singleRoom: list){
-            if(singleRoom.getRoomName().equals(roomDTO.getRoomName())){
-                return singleRoom;
-            }
-        }
-        return null;
-    }
+
 }

@@ -9,10 +9,7 @@ public class GPS {
      * @param latitude latitude parameter in decimal degrees (DD)
      * @param longitude longitude parameter in decimal degrees (DD)
      */
-    public GPS(double latitude, double longitude) throws InstantiationException {
-        if (!areParamsValid(latitude,longitude)) {
-            throw new InstantiationException("Invalid Parameters");
-        }
+    public GPS(double latitude, double longitude)  {
         this.latitude = latitude;
         this.longitude = longitude;
     }

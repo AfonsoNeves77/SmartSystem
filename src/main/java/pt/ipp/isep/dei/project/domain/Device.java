@@ -1,12 +1,14 @@
 package pt.ipp.isep.dei.project.domain;
 
+import java.util.List;
+
 public class Device {
 
     private String deviceName;
     private String deviceModel; //We need a way to validate that the model is compatible with the system.
     private String deviceLocation;
     private boolean status;
-    private ListOfSensors listOfSensors;
+    private final ListOfSensors listOfSensors;
 
     /**
      * Constructor for device, it initializes status and listOfSensors as null;
@@ -15,6 +17,17 @@ public class Device {
      * @param deviceLocation Room where the device is located
      * @throws InstantiationException Throws exception if parameters invalid.
      */
+
+//    public Device(String deviceName, String deviceModel, String deviceLocation,FactoryListOfSensors factoryListOfSensors) throws InstantiationException{
+//        if (isDeviceValid(deviceName)) {
+//            this.deviceName = deviceName;
+//            this.deviceModel = deviceModel;
+//            this.deviceLocation = deviceLocation;
+//            this.listOfSensors = factoryListOfSensors.createListOfSensorsObject();
+//        } else {
+//            throw new InstantiationException("Invalid parameter.");
+//        }
+//    }
 
     public Device(String deviceName, String deviceModel, String deviceLocation) throws InstantiationException{
         if (isDeviceValid(deviceName)) {
@@ -26,6 +39,7 @@ public class Device {
             throw new InstantiationException("Invalid parameter.");
         }
     }
+
 
     /**
      * Toggles device status
@@ -57,11 +71,16 @@ public class Device {
         return deviceLocation;
     }
 
-    public ListOfSensors getListOfSensors() {
-        return listOfSensors;
+    public boolean addSensor(String sensorName, SensorTypeOptions sensorType,FactorySensor factorySensor) {
+        return listOfSensors.addSensor(sensorName,sensorType,factorySensor);
     }
 
     public boolean getStatus() {
         return status;
     }
+
+    public List<Sensor> getListOfSensors(){
+        return listOfSensors.getListOfSensors();
+    }
+
 }
