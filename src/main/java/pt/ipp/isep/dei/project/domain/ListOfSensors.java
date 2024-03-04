@@ -28,22 +28,6 @@ public class ListOfSensors {
      * @throws InstantiationException If an error occurs during sensor instantiation.
      */
 
-    private Sensor createSensor(String sensorName,SensorTypeOptions sensorType) throws InstantiationException {
-       if(sensorType.equals(SensorTypeOptions.HUMIDITY)){
-           return new HumiditySensor(sensorName);
-       }else {
-           return new TemperatureSensor(sensorName);
-       }
-    }
-
-    /**
-     * Adds a new sensor to the list.
-     *
-     * @param sensorName The name of the sensor to be added.
-     * @param sensorType The type of the sensor to be added.
-     * @return 0 on successful addition, 1 if instantiation error, 2 if the sensor already exists.
-     */
-
     public boolean addSensor(String sensorName, SensorTypeOptions sensorType,FactorySensor factorySensor){
         if(isSensorInList(sensorName)) {
             return false;

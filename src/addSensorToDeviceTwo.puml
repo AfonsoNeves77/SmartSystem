@@ -5,13 +5,13 @@ autonumber
 
 participant ":addSensorToDeviceController" as CTRL
 participant ":House" as h
-
 participant ":RoomDTOMapper" as RDTM
 participant ":Room" as r
 participant ":DeviceDTOMapper" as DDTM
 participant "dev : Device" as dev
 participant ":SensorTypeOptions" as STO
 participant "ListOfSensors" as LS
+participant ":FactorySensor" as FS
 participant "sensor : Sensor" as sen
 
 [o-> CTRL : getRooms()
@@ -26,23 +26,24 @@ loop for each room in room list
 RDTM -> RDTM : RoomDTO = domainToDTO(room)
 activate RDTM
 deactivate RDTM
-RDTM -> RDTM : add(RoomDTO)
+RDTM -> RDTM : put(RoomDTO)
 activate RDTM
 deactivate RDTM
 end loop
-RDTM -> CTRL : roomDtoList
+RDTM -> CTRL : roomAndRoomDtoList
 deactivate RDTM
+CTRL -> CTRL : dtoRoomList = truncateList(roomAndRoomDtoList)
+activate CTRL
+deactivate CTRL
 [o<-- CTRL : dtoRoomList
 deactivate CTRL
 
 
 [o-> CTRL : getDevicesFromRoom(roomDTO)
 activate CTRL
-CTRL -> CTRL : roomName = getName(roomDTO)
+CTRL -> CTRL : room = getRoom(roomDTO)
 activate CTRL
 deactivate CTRL
-CTRL -> h : room = getRoomByName(roomName)
-
 CTRL -> r : getDevices()
 activate r
 r -> CTRL : deviceList
@@ -53,12 +54,15 @@ loop for each device in device list
 DDTM -> DDTM : DeviceDTO = domainToDTO(device)
 activate DDTM
 deactivate DDTM
-DDTM -> DDTM : add(DeviceDTO)
+DDTM -> DDTM : put(DeviceDTO)
 activate DDTM
 deactivate DDTM
 end loop
-DDTM -> CTRL : deviceDtoList
+DDTM -> CTRL : deviceAndDeviceDtoList
 deactivate DDTM
+CTRL -> CTRL : dtoDeviceList = truncateList(deviceAndDeviceDtoList)
+activate CTRL
+deactivate CTRL
 [o<-- CTRL : dtoDeviceList
 deactivate CTRL
 
@@ -72,15 +76,16 @@ deactivate CTRL
 
 [o-> CTRL : addSensor(deviceDto, sensorName,sensorType)
 activate CTRL
-CTRL -> CTRL : deviceName = getName(deviceDTO)
+CTRL -> CTRL : device = getDevice(deviceDTO)
 activate CTRL
 deactivate CTRL
-CTRL -> r : device = getDeviceByName(deviceName)
-CTRL -> dev : addSensor(sensorName,sensorType)
+CTRL -> dev : addSensor(sensorName,sensorType,factorySensor)
 activate dev
-dev -> LS : addSensor(sensorName,sensorType)
+dev -> LS : addSensor(sensorName,sensorType,factorySensor)
 activate LS
-LS -> sen ** : createSensor(sensorName,sensorType)
+LS -> FS : sensor = createSensor(sensorName,sensorType,factorySensor)
+activate FS
+FS -> sen ** : <create>
 LS -> LS : add(sensor)
 activate LS
 deactivate LS

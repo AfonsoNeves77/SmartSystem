@@ -1,13 +1,16 @@
 package pt.ipp.isep.dei.project.testArchive;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pt.ipp.isep.dei.project.controller.AddSensorToDeviceCTRL;
+import pt.ipp.isep.dei.project.controller.CommonListOfDevices;
+import pt.ipp.isep.dei.project.controller.CommonListOfRooms;
 import pt.ipp.isep.dei.project.domain.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class SensorTypeListTest {
@@ -134,85 +137,111 @@ public class SensorTypeListTest {
     }*/
 
 
-//    @Test
-//    void configureSensor() throws InstantiationException {
-//
-//        //Arrange
-//        FactoryListOfSensors factoryListOfSensors = mock(FactoryListOfSensors.class);
-//        ListOfSensors listOfSensorsDouble = mock(ListOfSensors.class);
-//
-//        FactorySensor factorySensor = mock(FactorySensor.class);
-//        String a = "A";
-//        String b = "B";
-//        String c = "C";
-//        String d = "D";
-//        //when(listOfSensorsDouble.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor)).thenReturn(true);
-//        Device device = new Device(a,b,c,factoryListOfSensors);
-//
-//        boolean result = device.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor);
-//
-//        assertTrue(result);
-//
-//    }
-
     @Test
-    void configureSensorTwo() throws InstantiationException {
+    void addSensorToDeviceIsolationTest_SuccessAdding() throws InstantiationException {
 
         //Arrange
-        FactoryListOfSensors factoryListOfSensors = mock(FactoryListOfSensors.class);
         ListOfSensors listOfSensorsDouble = mock(ListOfSensors.class);
-
         FactorySensor factorySensor = mock(FactorySensor.class);
-        String a = "A";
-        String b = "B";
-        String c = "C";
-
-        //Act
-        //when(factoryListOfSensors.createListOfSensorsObject()).thenReturn(listOfSensorsDouble);
+        String a = "param1";
+        String b = "param2";
+        String c = "param3";
         when(listOfSensorsDouble.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor)).thenReturn(true);
-        Device device = new Device(a,b,c,factoryListOfSensors);
+        Device device = new Device(a,b,c);
 
         boolean result = device.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor);
 
+        assertTrue(result);
+
+    }
+
+    @Test
+    void addSensorToDeviceIsolationTest_FailedAdding() throws InstantiationException {
+
+        //Arrange
+        ListOfSensors listOfSensorsDouble = mock(ListOfSensors.class);
+        FactorySensor factorySensor = mock(FactorySensor.class);
+        String a = "param1";
+        String b = "param2";
+        String c = "param3";
+        when(listOfSensorsDouble.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor)).thenReturn(false);
+        Device device = new Device(a,b,c);
+
+        boolean result = device.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor);
+
+        assertTrue(result);
+
+    }
+
+    @Test
+    void addSensorToDeviceIsolationTest_ListOfSensors() {
+
+        //Arrange
+        FactorySensor factorySensor = mock(FactorySensor.class);
+        Sensor sensor = mock(Sensor.class);
+        String a = "param1";
+        String b = "param2";
+        String c = "param3";
+
+        //Act
+
+        ListOfSensors listOfSensors = new ListOfSensors();
+        when(factorySensor.createSensor(a,SensorTypeOptions.HUMIDITY)).thenReturn(sensor);
+        boolean result = listOfSensors.addSensor(a,SensorTypeOptions.HUMIDITY,factorySensor);
 
         //Assert
         assertTrue(result);
 
     }
 
+    @Test
+    void addSensorToDeviceIsolationTest_ListOfSensorsFailed() {
 
+        //Arrange
+        FactorySensor factorySensor = mock(FactorySensor.class);
+        Sensor sensor = mock(Sensor.class);
+
+        //Act
+
+        ListOfSensors listOfSensors = new ListOfSensors();
+        when(factorySensor.createSensor(null,SensorTypeOptions.HUMIDITY)).thenThrow(IllegalArgumentException.class);
+        boolean result = listOfSensors.addSensor(null,SensorTypeOptions.HUMIDITY,factorySensor);
+
+        //Assert
+        assertFalse(result);
+
+    }
+
+
+
+
+
+//    private static House  myHouseDouble;
+//    private static CommonListOfRooms commonRoomsDouble;
+//    private static CommonListOfDevices commonDevicesDouble;
+//    private static FactorySensor factorySensorDouble;
+//
+//
+//    @BeforeAll
+//
+//    static void setUp(){
+//
+//        myHouseDouble = mock(House.class);
+//        commonRoomsDouble = mock(CommonListOfRooms.class);
+//        commonDevicesDouble = mock(CommonListOfDevices.class);
+//        factorySensorDouble = mock(FactorySensor.class);
+//    }
+//
 //    @Test
-//    void addSensorIsolationTest() throws InstantiationException {
-//        //Arrange
-//        String sensorName = "Sensor 1";
-//        SensorTypeOptions sensorType = SensorTypeOptions.TEMPERATURE;
-//        Device device = new Device("Name","Model","RoomK",factorySensorDouble);
-//        ListOfSensors listOfSensorsDouble = device.getListOfSensors();
-//        listOfSensorsDouble = mock(ListOfSensors.class);
-//        //Act
-//        when(listOfSensorsDouble.addSensor(sensorName,sensorType,factorySensorDouble)).thenReturn(true);
-//        boolean result = device.addSensor(sensorName,sensorTypeTwo,factorySensorDouble);
-//        //Assert
-//        assertTrue(result);
+//
+//    void getRoomsIsolationTest_Controller(){
+//
+//        AddSensorToDeviceCTRL addSensorToDeviceCTRL = new AddSensorToDeviceCTRL(myHouseDouble,factorySensorDouble);
+//
 //    }
 
 
 
-    @Test
-    void addSensorIsolationTest() throws InstantiationException {
-        //Arrange
-        String sensorName = "Sensor 1";
-        SensorTypeOptions sensorType = SensorTypeOptions.TEMPERATURE;
-        FactorySensor factorySensorDouble = mock(FactorySensor.class);
-        Device device = new Device("Name","Model","RoomK");
-
-        ListOfSensors listOfSensorsDouble = mock(ListOfSensors.class);
-        //Act
-        when(listOfSensorsDouble.addSensor(sensorName,sensorType,factorySensorDouble)).thenReturn(true);
-        boolean result = device.addSensor(sensorName,sensorType,factorySensorDouble);
-        //Assert
-        assertTrue(result);
-    }
 
 
 

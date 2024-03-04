@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class    DeviceDTOMapper {
     static public DeviceDTO Domain2DTO(Device device){
@@ -28,4 +29,13 @@ public class    DeviceDTOMapper {
 
         return deviceDTOAndDevice;
     }
+
+//    static public List<DeviceDTO> Domain2DTO(List<Device> deviceList)
+//    {
+//        return deviceList.stream().map(device -> new DeviceDTO(
+//                device.getDeviceName(),device.getDeviceModel(),
+//                device.getDeviceLocation(),device.getStatus()
+//        )).collect(Collectors.toList());
+//
+//    }
 }

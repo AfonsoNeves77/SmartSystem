@@ -23,7 +23,7 @@ public class ListOfDevices {
      * @throws InstantiationException If the device cannot be instantiated.
      */
     private Device createDevice(String deviceName, String deviceModel, String location,FactoryListOfSensors factoryListOfSensors) throws InstantiationException {
-        return new Device(deviceName, deviceModel, location,factoryListOfSensors);
+        return new Device(deviceName, deviceModel, location);
     }
 
     /**

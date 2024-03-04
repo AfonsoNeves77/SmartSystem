@@ -46,6 +46,6 @@ public class AddDeviceToRoomCTRL {
 
         Room selectedRoom = common.getSelectedRoom(roomDTO);
         String roomLocation = selectedRoom.getRoomName();
-        return selectedRoom.addDevice(deviceName,deviceModel,roomLocation,factoryListOfSensors);
+        return selectedRoom.addDevice(deviceName,deviceModel,roomLocation, );
     }
 }

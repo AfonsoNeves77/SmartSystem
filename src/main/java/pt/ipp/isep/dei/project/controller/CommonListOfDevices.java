@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class CommonListOfDevices {
 
+    //Não precisa da HOUSE!!!!
     private House house;
 
     private Map<DeviceDTO, Device> _deviceDTOAndDevice = new HashMap<>();

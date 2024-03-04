@@ -1,7 +1,4 @@
 package pt.ipp.isep.dei.project.domain;
-
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public enum SensorTypeOptions {
